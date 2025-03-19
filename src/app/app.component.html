@@ -1,0 +1,182 @@
+<div style="margin-bottom: 20px">
+  <h2>AG-Grid Table Assignment</h2>
+  <ag-grid-angular
+    style="width: 100%; height: 400px"
+    class="ag-theme-alpine"
+    [rowData]="rowData"
+    [columnDefs]="columnData"
+    [rowSelection]="rowSelection"
+    [gridOptions]="gridOptions"
+    [sideBar]="sideBar"
+    rowSelection="multiple"
+    (selectionChanged)="onSelectionChanged($event)"
+    (gridReady)="onGridReady($event)"
+  ></ag-grid-angular>
+</div>
+
+<div class="action-section">
+  <button type="button" 
+          class="retrieve-btn" 
+          (click)="showSelectedRows()" 
+          [disabled]="selectedRows.length === 0">
+    Retrieve Data
+  </button>
+  <span>
+    {{ selectedRows.length === 0 ? 
+      'No Row Selected!' : 
+      (showRetrievedData ? 'Retrieved Data Visible, is also logged to console' : 'Retrieved Data Hidden') }}
+  </span>
+</div>
+
+<div *ngIf="selectedRows.length > 0 && showRetrievedData" class="table-container">
+  <h3 class="section-title">Selected Rows</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Rule Name</th>
+          <th>Active</th>
+          <th>Type</th>
+          <th>Sub-Type</th>
+          <th>Domain</th>
+          <th>Impacted</th>
+          <th>Favourite</th>
+          <th>Scheduled</th>
+          <th>Last Scheduled Date</th>
+          <th>Alert</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of selectedRows">
+          <td>{{ row.id }}</td>
+          <td>{{ row.ruleName }}</td>
+          <td>{{ row.active }}</td>
+          <td>{{ row.type }}</td>
+          <td>{{ row.subType }}</td>
+          <td>{{ row.domain }}</td>
+          <td>{{ row.impacted }}</td>
+          <td>{{ row.favourite }}</td>
+          <td>{{ row.scheduled }}</td>
+          <td>{{ row.lastScheduledDate }}</td>
+          <td>{{ row.alert }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="form-container">
+  <h3 class="section-title">Form Data (Save/Update)</h3>
+  <form class="data-form" [formGroup]="formData">
+    <div class="form-group">
+      <label for="id">Id:</label>
+      <input type="number" formControlName="id" />
+      <div *ngIf="formData.get('id')?.invalid && formData.get('id')?.touched" class="error-msg">
+        Id is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="ruleName">Rule Name:</label>
+      <input type="text" formControlName="ruleName" />
+      <div *ngIf="formData.get('ruleName')?.invalid && formData.get('ruleName')?.touched" class="error-msg">
+        Rule Name is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="active">Active:</label>
+      <select formControlName="active">
+        <option value="Y">Yes</option>
+        <option value="N">No</option>
+      </select>
+      <div *ngIf="formData.get('active')?.invalid && formData.get('active')?.touched" class="error-msg">
+        Active status is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="type">Type:</label>
+      <select formControlName="type">
+        <option value="Y">Match</option>
+        <option value="N">Not Match</option>
+      </select>
+      <div *ngIf="formData.get('type')?.invalid && formData.get('type')?.touched" class="error-msg">
+        Type is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="subType">Sub-Type:</label>
+      <select formControlName="subType">
+        <option value="Y">2DS - Trace Changes</option>
+        <option value="N">1DS - File Monitor</option>
+      </select>
+      <div *ngIf="formData.get('subType')?.invalid && formData.get('subType')?.touched" class="error-msg">
+        Sub-Type is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="domain">Domain:</label>
+      <input type="text" formControlName="domain" />
+    </div>
+    
+    <div class="form-group">
+      <label for="impacted">Impacted:</label>
+      <input type="number" formControlName="impacted" />
+      <div *ngIf="formData.get('impacted')?.invalid && formData.get('impacted')?.touched" class="error-msg">
+        Impacted is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="favourite">Favourite:</label>
+      <select formControlName="favourite">
+        <option value="Y">Y</option>
+        <option value="N">N</option>
+      </select>
+      <div *ngIf="formData.get('favourite')?.invalid && formData.get('favourite')?.touched" class="error-msg">
+        Favourite status is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="scheduled">Scheduled:</label>
+      <select formControlName="scheduled">
+        <option value="Y">Y</option>
+        <option value="N">N</option>
+      </select>
+      <div *ngIf="formData.get('scheduled')?.invalid && formData.get('scheduled')?.touched" class="error-msg">
+        Scheduled status is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastScheduledDate">Last Scheduled Date:</label>
+      <input type="datetime-local" formControlName="lastScheduledDate" />
+      <div *ngIf="formData.get('lastScheduledDate')?.invalid && formData.get('lastScheduledDate')?.touched" class="error-msg">
+        Last Scheduled Date is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="alert">Alert:</label>
+      <select formControlName="alert">
+        <option value="Y">Y</option>
+        <option value="N">N</option>
+      </select>
+      <div *ngIf="formData.get('alert')?.invalid && formData.get('alert')?.touched" class="error-msg">
+        Alert status is required.
+      </div>
+    </div>
+
+    <button type="button" class="save-btn" (click)="saveOrUpdateData()">Save/Update</button>
+    <span>
+      {{ showSaveMessage ? 
+        'Data Saved/Updated successfully to table and also logged to console' : 
+        '' }}
+    </span>
+  </form>
+</div>
